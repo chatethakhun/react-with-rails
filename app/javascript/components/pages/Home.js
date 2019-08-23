@@ -1,20 +1,25 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
+import classNames from 'classnames/bind';
+
+import style from 'stylesheets/components/_general.scss';
+
+const c = classNames.bind(style);
 
 const Home = ({ history }) => {
   const handleClick = evt => {
     history.push('/add-todo');
   };
 
-  const [count, setCount] = useState(0);
-
   return (
-    <Container>
-      <Row />
-      <Row>
-        <Button onClick={handleClick}>Go to add page {count}</Button>
-      </Row>
-    </Container>
+    <div className={c('f-container')}>
+      <Container>
+        <br />
+        <Row>
+          <Button onClick={handleClick}>Go to add page</Button>
+        </Row>
+      </Container>
+    </div>
   );
 };
 

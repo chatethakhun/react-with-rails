@@ -1,11 +1,12 @@
 class TodosController < ApplicationController
   skip_before_action :verify_authenticity_token
   before_action :set_todo, only: [:show, :edit, :update, :destroy]
-
+  respond_to :json
   # GET /todos
   # GET /todos.json
   def index
     @todos = Todo.all
+    respond_with @todos
   end
 
   # GET /todos/1

@@ -1,48 +1,83 @@
-import React, { useState } from 'react';
-import { Form, Button } from 'react-bootstrap';
-import Axios from 'axios';
+import React, { useState, useEffect } from 'react';
+import { Form, Button, Row } from 'react-bootstrap';
+import classNames from 'classnames/bind';
+import { connect } from 'react-redux';
 
-const AddTodo = () => {
+import style from 'stylesheets/application.scss';
+import {
+  addTodo,
+  resetErrorMessage
+} from '../../redux/reducers/todo-reducer/action';
+
+const c = classNames.bind(style);
+
+const AddTodo = ({
+  errorText,
+  errorDescription,
+  addTodo,
+  resetErrorMessage
+}) => {
   const [todo, setTodo] = useState([]);
-  const [description, setDescription] = useState('');
-  const [errorDescription, setErrorDescription] = useState('');
-  const [errorText, setErrorText] = useState('');
+  const [textDescription, setDescription] = useState('');
+
   const submitTodo = async event => {
     event.preventDefault();
-    try {
-      await Axios.post('/todos', { text: todo, description });
-    } catch (errors) {
-      setErrorText(errors.response.data.text);
-      setErrorDescription(errors.response.data.description);
-      //   setError(error);
-    }
+    addTodo(todo, textDescription);
   };
+
+  useEffect(() => {
+    resetErrorMessage();
+  }, []);
+
   return (
-    <Form onSubmit={submitTodo}>
-      <Form.Group>
-        <Form.Label>Todo</Form.Label>
-        <Form.Control
-          type="text"
-          onChange={evt => {
-            setTodo(evt.target.value);
-          }}
-          value={todo}
-        />
-        {errorText && <Form.Text>{errorText}</Form.Text>}
-        <Form.Control
-          type="text"
-          onChange={evt => {
-            setDescription(evt.target.value);
-          }}
-          value={description}
-        />
-        {errorDescription && <Form.Text>{errorDescription}</Form.Text>}
-      </Form.Group>
-      <Button variant="primary" type="submit">
-        Submit
-      </Button>
-    </Form>
+    <div className={c('f-container')}>
+      <div className={c('s-container', 'mx-auto', 'center')}>
+        <Form onSubmit={submitTodo}>
+          <h1>Todo</h1>
+          <Form.Group>
+            <Row>
+              <Form.Control
+                type="text"
+                onChange={evt => {
+                  setTodo(evt.target.value);
+                }}
+                value={todo}
+                placeholder="Todo"
+              />
+              {errorText && (
+                <Form.Text className="text-error">{errorText}</Form.Text>
+              )}
+            </Row>
+            <br />
+            <Row>
+              <Form.Control
+                type="text"
+                onChange={evt => {
+                  setDescription(evt.target.value);
+                }}
+                value={textDescription}
+                placeholder="Description"
+              />
+              {errorDescription && (
+                <Form.Text className="text-error">{errorDescription}</Form.Text>
+              )}
+            </Row>
+          </Form.Group>
+          <Button variant="primary" type="submit" size="lg">
+            Submit
+          </Button>
+        </Form>
+      </div>
+    </div>
   );
 };
 
-export default AddTodo;
+const AddTodoWithReducer = connect(
+  state => ({
+    errorText: state.todo.errorText,
+    errorDescription: state.todo.errorDescription
+  }),
+  { addTodo, resetErrorMessage }
+)(AddTodo);
+
+export default AddTodoWithReducer;

@@ -1,4 +1,47 @@
+//=======
+
+h1,
+h2,
+h3,
+h4,
+p,
+th,
+td {
+  color: #333 !important;
+}
+
+.text-error {
+  color: red;
+  font-size: 12px;
+}
+
 .f-container {
   height: calc(100vh - 56px);
   background: #eee;
+  padding: 0px 50px;
+}
+
+.m-container {
+  width: 50%;
+}
+
+.s-container {
+  width: 20%;
+}
+
+.center {
+  text-align: center;
+}
+
+.d-flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.d-flex-center {
+  justify-content: center;
+}
+
+.mx-auto {
+  margin: auto;
 }

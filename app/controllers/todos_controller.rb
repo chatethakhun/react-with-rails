@@ -12,6 +12,7 @@ class TodosController < ApplicationController
   # GET /todos/1
   # GET /todos/1.json
   def show
+    respond_with @todo
   end
 
   # GET /todos/new
@@ -28,7 +29,7 @@ class TodosController < ApplicationController
   def create
     @todo = Todo.new(todo_params)
       if @todo.save
-        render json: {status: :created}
+        render json: { status: 'Todo was successfully created.'}
       else
         render json: @todo.errors, status: :unprocessable_entity 
       end
@@ -52,10 +53,7 @@ class TodosController < ApplicationController
   # DELETE /todos/1.json
   def destroy
     @todo.destroy
-    respond_to do |format|
-      format.html { redirect_to todos_url, notice: 'Todo was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    render json: { status: 'Todo was successfully removed.'}
   end
 
   private

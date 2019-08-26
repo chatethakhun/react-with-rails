@@ -1,21 +1,34 @@
-import React, { useEffect } from 'react';
-import useAxios from 'axios-hooks';
-import { Button, Table } from 'react-bootstrap';
+import React, { useEffect, useState } from 'react';
+import { Button, Table, Modal } from 'react-bootstrap';
 import classNames from 'classnames/bind';
+import { connect } from 'react-redux';
+
+import { deleteTodo, getTodos } from '../../redux/reducers/todo-reducer/action';
 
 import style from 'stylesheets/application.scss';
 
 const c = classNames.bind(style);
 
-const Home = ({ history }) => {
+const Home = ({ history, deleteTodo, getTodos, todos }) => {
+  const [showModal, setModal] = useState(false);
+  const [todoSelected, setTodoSelected] = useState(null);
+
   const handleClick = () => {
     history.push('/todo');
   };
 
-  const [{ data, loading, error }, refetch] = useAxios('/todos.json');
+  const handleClose = () => {
+    setModal(false);
+  };
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error!</p>;
+  const handleDelete = id => {
+    if (id) deleteTodo(id);
+    setModal(false);
+  };
+
+  useEffect(() => {
+    getTodos();
+  }, []);
 
   return (
     <div className={c('f-container')}>
@@ -36,25 +49,68 @@ const Home = ({ history }) => {
               <th>#</th>
               <th>Text</th>
               <th>Description</th>
-              <th>Action</th>
+              <th className={c('pull-right')}>Action</th>
             </tr>
           </thead>
           <tbody>
-            {data.map((todo, index) => (
-              <tr key={todo.id}>
-                <td>{index + 1}</td>
-                <td>{todo.text}</td>
-                <td>{todo.description}</td>
-                <td>
-                  <i className="fas fa-trash" />
-                </td>
-              </tr>
-            ))}
+            {todos &&
+              todos.length > 0 &&
+              todos.map((todo, index) => (
+                <tr key={todo.id}>
+                  <td>{index + 1}</td>
+                  <td>{todo.text}</td>
+                  <td>{todo.description}</td>
+                  <td className={c('pull-right')}>
+                    <a
+                      onClick={() => {
+                        setTodoSelected(todo.id);
+                        setModal(true);
+                      }}
+                      className={c('link', 'trash')}
+                    >
+                      <i className="fas fa-trash" />
+                    </a>
+                    <a
+                      onClick={() => history.push(`/todo/${todo.id}`)}
+                      className={c('link', 'eye')}
+                    >
+                      <i className="fas fa-eye" />
+                    </a>
+                    <a
+                      onClick={() => history.push(`/todo/edit/${todo.id}`)}
+                      className={c('link', 'edit')}
+                    >
+                      <i className="fas fa-edit" />
+                    </a>
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </Table>
       </div>
+      <Modal show={showModal} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Confirm your action!</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Are you sure to remove this item?</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={() => handleDelete(todoSelected)}>
+            Confirm
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };
 
-export default Home;
+const HomeWithReducer = connect(
+  state => ({
+    todos: state.todo.todos
+  }),
+  { deleteTodo, getTodos }
+)(Home);
+
+export default HomeWithReducer;

@@ -1,8 +1,15 @@
-import { SET_ERROR_MESSAGE, RESET_ERROR_MESSAGE } from './type';
+import {
+  SET_ERROR_MESSAGE,
+  RESET_ERROR_MESSAGE,
+  GET_TODOS,
+  GET_TODO
+} from './type';
 
 const initialState = {
   errorText: '',
-  errorDescription: ''
+  errorDescription: '',
+  todos: [],
+  todo: null
 };
 
 const todoReducer = (state = initialState, action) => {
@@ -14,6 +21,16 @@ const todoReducer = (state = initialState, action) => {
       };
     case RESET_ERROR_MESSAGE:
       return initialState;
+    case GET_TODOS:
+      return {
+        ...state,
+        todos: action.data
+      };
+    case GET_TODO:
+      return {
+        ...state,
+        todo: action.data
+      };
     default:
       return {
         ...state

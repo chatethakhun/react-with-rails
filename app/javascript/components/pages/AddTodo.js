@@ -17,9 +17,6 @@ const AddTodo = ({
   addTodo,
   resetErrorMessage
 }) => {
-  const [todo, setTodo] = useState([]);
-  const [textDescription, setDescription] = useState('');
-
   const submitTodo = async event => {
     event.preventDefault();
     addTodo(todo, textDescription);

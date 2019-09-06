@@ -1,15 +1,19 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
-
+import { connect, useSelector } from 'react-redux';
 import NavbarHeader from './organism/Nav';
 import AddTodo from './pages/AddTodo';
 import Home from './pages/Home';
 import ShowTodo from './pages/ShowTodo';
 import UpdateTodo from './pages/UpdateTodo';
 
+import { Toast } from 'react-bootstrap';
+
 const App = () => {
+  const flash = useSelector(state => state.flash.message);
+  console.log(flash);
   return (
-    <div>
+    <div className="app">
       <NavbarHeader />
       <Switch>
         <Route exact path="/" component={Home} />
@@ -17,6 +21,11 @@ const App = () => {
         <Route exact path="/todo/:id" component={ShowTodo} />
         <Route exact path="/todo/edit/:id" component={UpdateTodo} />
       </Switch>
+      {flash != '' && (
+        <Toast className="flash-message">
+          <Toast.Body>{flash}</Toast.Body>
+        </Toast>
+      )}
     </div>
   );
 };

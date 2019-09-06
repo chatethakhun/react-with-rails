@@ -29,7 +29,7 @@ class TodosController < ApplicationController
   def create
     @todo = Todo.new(todo_params)
       if @todo.save
-        render json: { status: 'Todo was successfully created.'}
+        render json: { message: 'Todo was successfully created.'}
       else
         render json: @todo.errors, status: :unprocessable_entity 
       end
@@ -38,14 +38,10 @@ class TodosController < ApplicationController
   # PATCH/PUT /todos/1
   # PATCH/PUT /todos/1.json
   def update
-    respond_to do |format|
-      if @todo.update(todo_params)
-        format.html { redirect_to @todo, notice: 'Todo was successfully updated.' }
-        format.json { render :show, status: :ok, location: @todo }
-      else
-        format.html { render :edit }
-        format.json { render json: @todo.errors, status: :unprocessable_entity }
-      end
+    if @todo.update(todo_params)
+      render json: { todo: @todo, message: 'Update todo sucessfully' }
+    else
+      render json: @todo.errors, status: :unprocessable_entity 
     end
   end
 
@@ -53,7 +49,7 @@ class TodosController < ApplicationController
   # DELETE /todos/1.json
   def destroy
     @todo.destroy
-    render json: { status: 'Todo was successfully removed.'}
+    render json: { message: "#{@todo.text} was successfully removed."}
   end
 
   private

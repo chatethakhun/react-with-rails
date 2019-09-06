@@ -1,0 +1,22 @@
+.flash-message {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  animation-name: hideAfterTime;
+  animation-duration: 0.5s;
+  animation-timing-function: ease-in;
+  animation-delay: 7s;
+  animation-fill-mode: forwards;
+  animation-iteration-count: 1;
+  transition: 0.5s ease-in;
+}
+@keyframes hideAfterTime {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}

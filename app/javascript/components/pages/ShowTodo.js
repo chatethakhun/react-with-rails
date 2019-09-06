@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import classNames from 'classnames/bind';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { Card } from 'react-bootstrap';
 
 import style from 'stylesheets/application.scss';
@@ -8,26 +8,27 @@ import { getTodo } from '../../redux/reducers/todo-reducer/action';
 
 const c = classNames.bind(style);
 
-const ShowTodo = ({ getTodo, match, todo }) => {
+const ShowTodo = ({ getTodo, match }) => {
   useEffect(() => {
     getTodo(match.params.id);
   }, []);
+
+  const text = useSelector(state => state.todo.text);
+  const description = useSelector(state => state.todo.description);
   return (
-    todo && (
-      <div className={c('f-container', 'center')}>
-        <Card style={{ width: '18rem' }} className={c('mx-auto')}>
-          <Card.Body>
-            <Card.Title>{todo.text}</Card.Title>
-            <Card.Text>{todo.description}</Card.Text>
-          </Card.Body>
-        </Card>
-      </div>
-    )
+    <div className={c('f-container', 'center')}>
+      <Card style={{ width: '18rem' }} className={c('mx-auto p')}>
+        <Card.Body>
+          <Card.Title>{text}</Card.Title>
+          <Card.Text>{description}</Card.Text>
+        </Card.Body>
+      </Card>
+    </div>
   );
 };
 
 const ShowTodoWithReducer = connect(
-  state => ({ todo: state.todo.todo }),
+  null,
   { getTodo }
 )(ShowTodo);
 export default ShowTodoWithReducer;

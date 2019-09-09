@@ -9,6 +9,7 @@ import UpdateTodo from './pages/UpdateTodo';
 
 import { Toast } from 'react-bootstrap';
 import Login from './pages/Login';
+import PrivateRoute from './atoms/private-route';
 
 const App = () => {
   const flash = useSelector(state => state.flash.message);
@@ -16,11 +17,11 @@ const App = () => {
     <div className="app">
       <NavbarHeader />
       <Switch>
-        <Route exact path="/" component={Home} />
+        <PrivateRoute exact path="/" component={Home} />
         <Route exact path="/login" component={Login} />
-        <Route exact path="/todo" component={AddTodo} />
-        <Route exact path="/todo/:id" component={ShowTodo} />
-        <Route exact path="/todo/edit/:id" component={UpdateTodo} />
+        <PrivateRoute exact path="/todo" component={AddTodo} />
+        <PrivateRoute exact path="/todo/:id" component={ShowTodo} />
+        <PrivateRoute exact path="/todo/edit/:id" component={UpdateTodo} />
       </Switch>
       {flash != '' && (
         <Toast className="flash-message">

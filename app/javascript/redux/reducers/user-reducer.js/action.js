@@ -7,7 +7,6 @@ export const login = (email, password) => dispatch => {
   return api
     .post('/auth/sign_in', { email, password })
     .then(response => {
-      console.log(response);
       sessionStorage.setItem(
         'user',
         JSON.stringify({
@@ -16,9 +15,19 @@ export const login = (email, password) => dispatch => {
           uid: response.data.data.uid
         })
       );
-      history.push('/');
+      window.location = '/';
     })
     .catch(errors => {
       dispatch(handleMessage(errors.response.data.errors[0]));
     });
+};
+
+export const logout = () => dispatch => {
+  return api
+    .delete('/auth/sign_out')
+    .then(() => {
+      sessionStorage.removeItem('user');
+      window.location = '/';
+    })
+    .catch(errors => handleMessage(errors.response.data.errors[0]));
 };

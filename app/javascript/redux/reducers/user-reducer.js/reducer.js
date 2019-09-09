@@ -1,7 +1,7 @@
 import { LOGIN } from './type';
 
 const initial = {
-  login: false
+  login: sessionStorage.getItem('user') !== null
 };
 
 const userReducer = (state = initial, action) => {

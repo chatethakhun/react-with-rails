@@ -13,6 +13,8 @@ Rails.application.configure do
   config.consider_all_requests_local = true
   config.debug_exception_response_format = :api
 
+  config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
+
 
   # Enable/disable caching. By default caching is disabled.
   # Run rails dev:cache to toggle caching.

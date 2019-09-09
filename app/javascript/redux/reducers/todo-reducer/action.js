@@ -1,4 +1,3 @@
-import axios from 'axios';
 import {
   SET_ERROR_MESSAGE,
   RESET_ERROR_MESSAGE,
@@ -8,6 +7,7 @@ import {
 } from './type';
 import { history } from '../../store';
 import { handleMessage } from '../flash-message-reducer/action';
+import api from '../../../utils/api';
 
 const invalidData = errors => {
   return {
@@ -39,13 +39,13 @@ const setValue = (key, value) => ({
 });
 
 export const getTodos = () => dispatch => {
-  return axios.get('/todos.json').then(response => {
+  return api.get('/todos.json').then(response => {
     dispatch(getDatas(response.data));
   });
 };
 
 export const getTodo = todoId => dispatch => {
-  return axios.get(`/todos/${todoId}.json`).then(response => {
+  return api.get(`/todos/${todoId}.json`).then(response => {
     dispatch(setValue('text', response.data.text));
     dispatch(setValue('description', response.data.description));
   });
@@ -53,7 +53,7 @@ export const getTodo = todoId => dispatch => {
 
 export const addTodo = (text, description) => {
   return dispatch => {
-    return axios
+    return api
       .post('/todos.json', { text, description })
       .then(response => {
         dispatch(handleMessage(response.data.message));
@@ -66,7 +66,7 @@ export const addTodo = (text, description) => {
 };
 
 export const deleteTodo = id => dispatch => {
-  return axios
+  return api
     .delete(`/todos/${id}.json`)
     .then(response => {
       dispatch(handleMessage(response.data.message));
@@ -76,7 +76,7 @@ export const deleteTodo = id => dispatch => {
 };
 
 export const updateTodo = todo => dispatch => {
-  return axios
+  return api
     .put(`/todos/${todo.id}.json`, {
       text: todo.text,
       description: todo.description

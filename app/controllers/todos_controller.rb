@@ -1,6 +1,6 @@
 class TodosController < ApplicationController
   skip_before_action :verify_authenticity_token
-  before_action :set_todo, only: [:show, :edit, :update, :destroy]
+  before_action :set_todo, only: %i[show edit update destroy]
   before_action :authenticate_user!
   respond_to :json
   # GET /todos
@@ -22,8 +22,7 @@ class TodosController < ApplicationController
   end
 
   # GET /todos/1/edit
-  def edit
-  end
+  def edit; end
 
   # POST /todos
   # POST /todos.json
@@ -40,7 +39,7 @@ class TodosController < ApplicationController
   # PATCH/PUT /todos/1.json
   def update
     if @todo.update(todo_params)
-      render json: { todo: @todo, message: 'Update todo sucessfully' }
+      render json: { todo: @todo, message: 'Update todo successfully' }
     else
       render json: @todo.errors, status: :unprocessable_entity 
     end
@@ -50,7 +49,7 @@ class TodosController < ApplicationController
   # DELETE /todos/1.json
   def destroy
     @todo.destroy
-    render json: { message: "#{@todo.text} was successfully removed."}
+    render json: { message: "#{@todo.text} was successfully removed." }
   end
 
   private

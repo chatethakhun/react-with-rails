@@ -1,7 +1,13 @@
 import React from 'react';
-import { Navbar, Nav } from 'react-bootstrap';
+import {
+  Navbar,
+  Nav,
+  NavDropdown,
+  Button,
+  FormControl,
+  Form
+} from 'react-bootstrap';
 import { useSelector, connect } from 'react-redux';
-import api from '../../utils/api';
 import { logout } from '../../redux/reducers/user-reducer.js/action';
 
 const NavbarHeader = ({ logout }) => {
@@ -12,15 +18,20 @@ const NavbarHeader = ({ logout }) => {
   return (
     <Navbar bg="dark" expand="lg" variant="dark">
       <Navbar.Brand href="/">React-Rails Todo</Navbar.Brand>
-      <Nav className="mr-auto">
-        {!login ? (
-          <Nav.Link href="/login">Login</Nav.Link>
-        ) : (
-          <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
-        )}
-      </Nav>
 
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
+      <Navbar.Collapse id="basic-navbar-nav">
+        <Nav className="mr-auto">
+          {!login ? (
+            <Nav>
+              <Nav.Link href="/login">Login</Nav.Link>
+              <Nav.Link href="/register">Register</Nav.Link>
+            </Nav>
+          ) : (
+            <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
+          )}
+        </Nav>
+      </Navbar.Collapse>
     </Navbar>
   );
 };

@@ -30,6 +30,7 @@ gem 'jbuilder', '~> 2.5'
 # gem 'bcrypt', '~> 3.1.7'
 gem 'devise_token_auth'
 gem 'rack-cors', :require => 'rack/cors'
+gem "letter_opener", :group => :development
 
 gem 'responders'
 # Use ActiveStorage variant

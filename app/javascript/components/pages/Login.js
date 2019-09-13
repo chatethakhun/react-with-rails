@@ -1,20 +1,29 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import classNames from 'classnames/bind';
 import { Form, Col, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
+import queryString from 'query-string'
 
 import style from 'stylesheets/application.scss';
 import { login } from '../../redux/reducers/user-reducer.js/action';
+import {handleMessage} from "../../redux/reducers/flash-message-reducer/action";
 
 const c = classNames.bind(style);
 
-const Login = ({ login }) => {
+const Login = ({ login, handleMessage }) => {
   const submitLogin = event => {
     event.preventDefault();
     const email = event.currentTarget.elements[0].value;
     const password = event.currentTarget.elements[1].value;
     login(email, password);
   };
+
+  useEffect(() => {
+    let params = queryString.parse(window.location.search)
+    if(params.message) {
+      handleMessage(params.message)
+    }
+  },[])
 
   return (
     <div className={c('f-container', 'center')}>
@@ -41,5 +50,5 @@ const Login = ({ login }) => {
 
 export default connect(
   null,
-  { login }
+  { login, handleMessage }
 )(Login);

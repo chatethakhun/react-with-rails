@@ -6,7 +6,7 @@ class TodosController < ApplicationController
   # GET /todos
   # GET /todos.json
   def index
-    @todos = Todo.all
+    @todos = Todo.where(user_id: current_user)
     respond_with @todos
   end
 
@@ -28,6 +28,7 @@ class TodosController < ApplicationController
   # POST /todos.json
   def create
     @todo = Todo.new(todo_params)
+    @todo.user_id = current_user.id
       if @todo.save
         render json: { message: 'Todo was successfully created.'}
       else
